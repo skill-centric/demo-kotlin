@@ -13,7 +13,7 @@ plugins {
     id 'java'
 }
 
-group 'com.zavanton123'
+group 'com.skillcentric'
 version '1.0'
 
 apply plugin: 'kotlin'
