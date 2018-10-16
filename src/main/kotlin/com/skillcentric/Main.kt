@@ -106,8 +106,22 @@ val person = createPerson("Alice", 29)
 
 // extension function demo
 fun Person.isAdult() = age > 21
+
+// refer to the extension function
 val predicate = Person::isAdult
 
+// how to call
+fun demoCall() {
+    val person = Person("Mike", 23)
+    val isAdult: Boolean = predicate(person)
+}
+
+// A bound member reference demo
+fun demoBoundMemberReference() {
+
+    val mikeAgeFunction = person::age
+    println(mikeAgeFunction())
+}
 
 
 
