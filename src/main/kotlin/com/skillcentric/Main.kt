@@ -36,11 +36,13 @@ fun main(args: Array<String>) {
     // Directly call lambda
     { println("Hello world") }()
 
+    // Variable capturing demo
     val messages = listOf("Hello", "World")
     printMessagesWithPrefix(messages, prefix = "-")
 
     val count = tryToCountButtonClicks(Button())
     println(count)
+
 }
 
 // lambdas "capture" function parameters and local variables
@@ -85,6 +87,27 @@ fun tryToCountButtonClicks(button: Button): Int {
 
     return count
 }
+
+// Member reference demo
+// The same as: val getAge = { person: Person -> person.age }
+val getAge = Person::age
+
+// top-level function demo
+fun sendEmail(person: Person, message: String) {
+    // some implementation...
+}
+
+val action = { person: Person, message: String -> sendEmail(person, message) }
+val sameAction = ::sendEmail
+
+// constructor reference
+val createPerson = ::Person
+val person = createPerson("Alice", 29)
+
+// extension function demo
+fun Person.isAdult() = age > 21
+val predicate = Person::isAdult
+
 
 
 
