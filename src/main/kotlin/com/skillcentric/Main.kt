@@ -4,6 +4,19 @@ data class Person(val name: String, val age: Int)
 
 fun main(args: Array<String>) {
 
+    // Directly call lambda
+    { println("Hello world") }()
+
+    // Variable capturing demo
+    val messages = listOf("Hello", "World")
+    printMessagesWithPrefix(messages, prefix = "-")
+
+    val count = tryToCountButtonClicks(Button())
+    println(count)
+}
+
+fun demoLambdaSyntax() {
+
     // Pass a lambda to a library function
     val list = listOf(Person("Alice", 29), Person("Bob", 31))
 
@@ -21,28 +34,26 @@ fun main(args: Array<String>) {
 
     // use "it" keyword
     list.maxBy { it.age }
+}
+
+fun demoPutOutsideParenthesis() {
+
+    // Pass a lambda to a library function
+    val list = listOf(Person("Alice", 29), Person("Bob", 31))
 
     // Example 2:
     list.joinToString(separator = " ", transform = { person -> person.name })
 
     // we can put the lambda outside the parenthesis
     list.joinToString(" ") { person -> person.name }
+}
 
-    // Example 3: Assign lambda to a variable
+//  Assign lambda to a variable
+fun demoAssignToVariable() {
+
     val sum = { numOne: Int, numTwo: Int -> numOne + numTwo }
     val result = sum(1, 2)
     println(result);
-
-    // Directly call lambda
-    { println("Hello world") }()
-
-    // Variable capturing demo
-    val messages = listOf("Hello", "World")
-    printMessagesWithPrefix(messages, prefix = "-")
-
-    val count = tryToCountButtonClicks(Button())
-    println(count)
-
 }
 
 // lambdas "capture" function parameters and local variables
@@ -73,7 +84,7 @@ fun printProblemCounts(responses: Collection<String>) {
 
 class Button {
 
-    fun click(clickAction: () -> Unit) {
+    fun click(action: () -> Unit) {
 
     }
 }
@@ -122,6 +133,80 @@ fun demoBoundMemberReference() {
     val mikeAgeFunction = person::age
     println(mikeAgeFunction())
 }
+
+// Functional APIs for collections
+fun demoFilter() {
+
+    val list = listOf(1, 2, 3, 4)
+    list.filter { it % 2 == 0 }
+
+    val people = listOf(Person("Alice", 29),
+            Person("Mike", 38),
+            Person("Jack", 35))
+
+    people.filter { it.age > 30 }
+}
+
+fun demoMap() {
+
+    val list = listOf(1, 2, 3, 4)
+    list.map { it * it }
+
+    val people = listOf(Person("Alice", 29),
+            Person("Mike", 38),
+            Person("Jack", 35))
+
+    val names = people.map { it.name }
+    val sameNames = people.map(Person::name)
+}
+
+// Chaining
+fun demoChaining() {
+
+    val people = listOf(Person("Alice", 29),
+            Person("Mike", 38),
+            Person("Jack", 35))
+
+    val names = people.filter { it.age > 30 }
+            .map(Person::name)
+}
+
+fun moreDemo() {
+
+    // find the people with the same age, which is the max age in the group
+    val people = listOf(Person("Alice", 29),
+            Person("Mike", 38),
+            Person("Jack", 35),
+            Person("Jane", 38))
+
+    val maxAge = people.maxBy(Person::age)?.age
+    people.filter { it.age == maxAge }
+}
+
+fun demoMaps() {
+
+    val numbers = mapOf(0 to "zero", 1 to "one")
+
+    numbers.mapValues { it.value.toUpperCase() }
+}
+
+fun demoAllAnyCountFind() {
+
+    val canBeInClub27 = { p: Person -> p.age < 27 }
+    val people = listOf(Person("Alice", 25),
+            Person("Mike", 38),
+            Person("Jack", 35),
+            Person("Jane", 38))
+
+    people.all(canBeInClub27)
+    people.any(canBeInClub27)
+    people.count(canBeInClub27)
+    people.find(canBeInClub27)
+}
+
+
+
+
 
 
 
