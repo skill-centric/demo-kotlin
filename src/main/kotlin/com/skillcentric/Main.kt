@@ -223,8 +223,76 @@ fun demoLazy() {
     people.asSequence().map(Person::name).filter { it.startsWith("J") }
 }
 
+// Using Java functional interfaces (SAM interfaces)
+// SAM - single abstract method
+fun demoSamMethods() {
 
+    val actor = Actor()
 
+    // Note: object expression is used here instead of anonymous class
+    // a new instance of this object will be created on each method call
+    actor.processDoable(object : Doable {
+        override fun doJob(description: String?): String {
+
+            return "my $description"
+        }
+    })
+
+    // Note: lambda is used here
+    // if the lambda doesn’t access any variables from the function where it’s defined,
+    // the corresponding anonymous class instance is reused between calls
+    actor.processDoable { description -> "my $description" }
+
+    // the same as:
+    actor.processDoable(theAction)
+
+    // If the lambda captures variables from the surrounding scope, it’s no longer possible to
+    // reuse the same instance for every invocation.
+    // In that case, the compiler creates a new object for every call
+    // and stores the values of the captured variables in that object.
+    actor.processDoableWithCapturing("Important") { description -> "my $description" }
+
+}
+
+// (object is reused)
+val theAction = { description: String -> "my $description" }
+
+// SAM constructors: explicit conversion of lambdas to functional interfaces
+// (1) when method return an instance of functional interface, you can't return a lambda directly
+// you need to call SAM constructor
+fun createAllDoneRunnable(): Runnable {
+
+    return Runnable { println("All done!") }
+}
+
+// (2) when you need to store the functional interface instance into a variable
+// Android demo
+//fun demoSamConstructor() {
+//
+//    val listener = OnClickListener { view ->
+//
+//        val text = when (view.id) {
+//            R.id.button1 -> "First button"
+//            R.id.button2 -> "Second button"
+//            else -> "Unknown button"
+//        }
+//        toast(text)
+//    }
+//
+//    button.setOnClickListener(listener)
+//}
+
+// Lambda vs object expression
+// Note that there’s no this in a lambda as there is in an anonymous object:
+// there’s no way to refer to the anonymous class instance into which the
+// lambda is converted. From the compiler’s point of view, the lambda is a
+// block of code, not an object, and you can’t refer to it as an object. The
+// this reference in a lambda refers to a surrounding class.
+// If your event listener needs to unsubscribe itself while handling an event,
+// you can’t use a lambda for that. Use an anonymous object to implement
+// a listener, instead. In an anonymous object, the this keyword refers to
+// the instance of that object, and you can pass it to the API that removes
+// the listener.
 
 
 
