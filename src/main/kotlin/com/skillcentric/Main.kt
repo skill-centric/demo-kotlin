@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
     list.joinToString(separator = " ", transform = { person -> person.name })
 
     // we can put the lambda outside the parenthesis
-    list.joinToString(" ") {person -> person.name }
+    list.joinToString(" ") { person -> person.name }
 
     // Example 3: Assign lambda to a variable
     val sum = { numOne: Int, numTwo: Int -> numOne + numTwo }
@@ -36,8 +36,56 @@ fun main(args: Array<String>) {
     // Directly call lambda
     { println("Hello world") }()
 
+    val messages = listOf("Hello", "World")
+    printMessagesWithPrefix(messages, prefix = "-")
 
-
-
+    val count = tryToCountButtonClicks(Button())
+    println(count)
 }
+
+// lambdas "capture" function parameters and local variables
+fun printMessagesWithPrefix(messages: Collection<String>, prefix: String) {
+
+    messages.forEach {
+        println("$prefix $it")
+    }
+}
+
+// In contrast to java, kotlin lambdas
+// can access non-final variables from outer scope and change their values
+fun printProblemCounts(responses: Collection<String>) {
+
+    var clientProblems = 0
+    var serverProblems = 0
+
+    responses.forEach {
+
+        if (it.startsWith("4"))
+            clientProblems++
+        else if (it.startsWith("5"))
+            serverProblems++
+    }
+
+    println("Client problems: $clientProblems, server problems: $serverProblems")
+}
+
+class Button {
+
+    fun click(clickAction: () -> Unit) {
+
+    }
+}
+
+// Note: it will always return 0
+// because the lambda is executed after the function returns
+fun tryToCountButtonClicks(button: Button): Int {
+
+    var count = 0
+    button.click { count++ }
+
+    return count
+}
+
+
+
 
