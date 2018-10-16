@@ -204,6 +204,38 @@ fun demoAllAnyCountFind() {
     people.find(canBeInClub27)
 }
 
+// Lazy collection operations
+// functions create intermediate collections eagerly, meaning the
+// intermediate result of each step is stored in a temporary list. Sequences give you an
+// alternative way to perform such computations that avoids the creation of intermediate
+// temporary objects.
+fun demoLazy() {
+
+    val people = listOf(Person("Alice", 25),
+            Person("Mike", 38),
+            Person("Jack", 35),
+            Person("Jane", 38))
+
+    // Intermediate collections are created
+    people.map(Person::name).filter { it.startsWith("J") }
+
+    // Intermediate collections are not created
+    people.asSequence().map(Person::name).filter { it.startsWith("J") }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
